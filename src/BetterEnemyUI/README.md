@@ -1,9 +1,33 @@
 # BetterEnemyUI
 
-**Original mod by [Caites](https://www.nexusmods.com/). This is a rework of it** — the
-structure, the defect fixes and the test suite here are additions to their design, not a
-replacement for it. The injection strategy, the widget layout, the config surface and
-the diamond badge are all Caites' work and are why the mod looks the way it does.
+**Original mod by [Caites](https://www.nexusmods.com/profile/Caites) —
+[BetterEnemyUI on Nexus Mods](https://www.nexusmods.com/thebloodofdawnwalker/mods/234).
+This is a rework of it**, not a replacement: the structure, the defect fixes and the test
+suite here are additions to their design. The injection strategy, the widget layout, the
+config surface and the diamond badge are all Caites' work and are why the mod looks the
+way it does.
+
+## Thank you, Caites
+
+This mod exists because Caites built it, and the decisions that mattered most were right
+from the first version:
+
+- **Injecting into the game's own combat bar** instead of drawing a separate overlay. The
+  harder path, and the reason it inherits the game's art style, UI scaling, z-order and
+  occlusion for free rather than looking bolted on.
+- **Sentinel-named widgets** (`EI_HealthText`, `EI_LevelBox`) so re-running the injection
+  finds and reuses what it already built. Quietly prevents a whole class of duplication.
+- **Clamped config**, so a bad hand edit degrades instead of breaking the mod.
+- **`pcall` discipline throughout**, because an unprotected Lua error on the game thread
+  takes the entire game down with it.
+
+Those are the choices that are hard to get right and invisible when they are. What
+follows is four bug fixes and a test harness on top of a sound design — not a better
+idea. Please go **[endorse the original](https://www.nexusmods.com/thebloodofdawnwalker/mods/234)**,
+and consider their **[Patreon](https://www.patreon.com/caites)** if you get value from
+their work.
+
+## What it does
 
 Adds to the enemy combat bar:
 
@@ -216,3 +240,20 @@ Most breakage announces itself in `UE4SS.log`: `not found`, `could not construct
   negative deltas collapse to the same colour. Left as-is: that is a design decision
   rather than a defect.
 - **`lastErr` dedupes globally**, so two bars failing identically log once between them.
+
+## Credits
+
+**[Caites](https://www.nexusmods.com/profile/Caites)** wrote the original mod. Everything
+this one does visually is their design.
+
+- Original mod: **[BetterEnemyUI](https://www.nexusmods.com/thebloodofdawnwalker/mods/234)** on Nexus Mods
+- Nexus profile: <https://www.nexusmods.com/profile/Caites>
+- Patreon: <https://www.patreon.com/caites>
+
+Rework, test suite and tooling by Tristan Hyams.
+
+## Licence
+
+The repository is MIT, but this mod is derived from Caites' work, which carries no stated
+licence. Their terms take precedence over the repository's, and the licensing of this
+derivative is subject to their agreement.

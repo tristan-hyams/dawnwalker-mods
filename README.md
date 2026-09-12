@@ -1,6 +1,6 @@
 # dawnwalker-mods
 
-UE4SS Lua mods for [The Blood of Dawnwalker](https://store.steampowered.com/), aimed at
+UE4SS Lua mods for [The Blood of Dawnwalker](https://www.nexusmods.com/thebloodofdawnwalker), aimed at
 the quality-of-life gaps rather than at changing how the game plays.
 
 Tested against **game v1.0.4** (UE 5.5.4, `dw1-pc-258042-shipping-patch2`) with
@@ -10,7 +10,7 @@ Tested against **game v1.0.4** (UE 5.5.4, `dw1-pc-258042-shipping-patch2`) with
 
 | Mod | What it does | Status |
 |---|---|---|
-| [BetterEnemyUI](src/BetterEnemyUI) | Adds a numeric health readout and a level badge to the enemy combat bar, and blinks both when a target is nearly dead. | Working. Originally by **Caites**; reworked here. |
+| [BetterEnemyUI](src/BetterEnemyUI) | Adds a numeric health readout and a level badge to the enemy combat bar, and blinks both when a target is nearly dead. | Working. Rework of [Caites' original](https://www.nexusmods.com/thebloodofdawnwalker/mods/234). |
 | [LiveDump](src/LiveDump) | Development tool. Press a key in-game to dump the structure of any UE class named in config — functions, properties, widget tree, live instances. | Working. |
 
 ## Installing
@@ -56,9 +56,14 @@ depends on so a patch can be checked against it.
 
 ## Credits
 
-Mods here that started from someone else's work say so in their own README, and the
-original author is named at the top of the source. Nothing in this repo is a from-scratch
-replacement for an existing mod.
+**[Caites](https://www.nexusmods.com/profile/Caites)** wrote the original
+[BetterEnemyUI](https://www.nexusmods.com/thebloodofdawnwalker/mods/234), which the version
+here is a rework of rather than a replacement for. Endorse the original on Nexus, and
+they have a [Patreon](https://www.patreon.com/caites) if you get value from their work.
+
+Where a mod here started from someone else's work, its own README says so and the
+original author is named at the top of the source. Nothing in this repo is a
+from-scratch replacement for an existing mod.
 
 ## Licence
 
