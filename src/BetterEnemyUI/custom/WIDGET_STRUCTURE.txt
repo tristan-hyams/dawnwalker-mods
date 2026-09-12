@@ -1,0 +1,96 @@
+WidgetProbe report for WBP_CombatCharacterBar_C
+2026-09-07 21:18:47
+instance: WBP_CombatCharacterBar_C /Engine/Transient.GameEngine_2147482572:BP_GameInstance_C_2147482521.WBP_CombatCharacterBar_C_2147448221
+
+== CLASS CHAIN ==
+  WBP_CombatCharacterBar_C
+  CombatCharacterBarBase
+  UserWidget
+  Widget
+  Visual
+  Object
+
+== FUNCTIONS ==
+Look for anything like SetTargetCharacter / Init / Setup / OnTargetChanged.
+Those are RegisterHook candidates. Event Construct shows up as 'Construct'.
+
+  Should Combat Bar Be Visible
+  Update Stamina Bar Visibility
+  GetHealthType
+  SetStability
+  SetHealth
+  Attach To Pawn
+  On Attribute Changed
+  Update Values
+  On Fatigued State Changed
+  Update Target Character
+  OnBloodDrinkingStarted_Event
+  OnBloodDrinkingStopped_Event
+  OnDied_Event
+  Update Styles From Enemy Config
+  Construct
+  UpdateTarget
+  Bind Events
+  Unbind Events
+  SetIndicatorVisible
+  Unbind From Pawn And Hide
+  Tick
+  ExecuteUbergraph_WBP_CombatCharacterBar
+
+== PROPERTIES ==
+Confirms exact spelling (note the space in 'Target Character') and shows
+anything else bound to the enemy you could read instead.
+
+  UberGraphFrame                           StructProperty
+  FadeIn                                   ObjectProperty
+  AttackIndicatorFade                      ObjectProperty
+  StaminaFatigue                           ObjectProperty
+  HealthBarLeftCap                         ObjectProperty
+  HealthBarRightCap                        ObjectProperty
+  HelperAttackIndicator                    ObjectProperty
+  Image_118                                ObjectProperty
+  LevelIndicator                           ObjectProperty
+  NewStaminaBar                            ObjectProperty
+  SegmentedHealthBar                       ObjectProperty
+  StaminaBarLeftCap                        ObjectProperty
+  StaminaBarRightCap                       ObjectProperty
+  WBP_NPCWoundContainer                    ObjectProperty
+  Target Character                         ObjectProperty
+  OwnerCombat                              ObjectProperty
+  In Visibility                            EnumProperty
+  Health Bar Style                         ObjectProperty
+  Health Segment Count                     IntProperty
+  Enemy Config                             ObjectProperty
+
+== LIVE VALUES ==
+  Target Character       UObject: 000001F13EA18EB8
+  LevelIndicator         WBP_Combat_EnemyLevelIndicator_C /Engine/Transient.GameEngine_2147482572:BP_GameInstance_C_2147482521.WBP_CombatCharacterBar_C_2147448221.WidgetTree_2147448220.LevelIndicator
+  SegmentedHealthBar     WBP_Combat_SegmentedHealthBar_C /Engine/Transient.GameEngine_2147482572:BP_GameInstance_C_2147482521.WBP_CombatCharacterBar_C_2147448221.WidgetTree_2147448220.SegmentedHealthBar
+
+== WIDGET TREE ==
+<HIDDEN> marks widgets that exist but are not visible. If a health-number
+TextBlock is already in here, reuse it rather than building one.
+
+  Overlay_2  [Overlay]  <HIDDEN>
+    HelperAttackIndicator  [CommonVisualAttachment]  <HIDDEN>
+      Image_118  [Image]  <HIDDEN>
+    Overlay_0  [Overlay]  <HIDDEN>
+      SizeBox_0  [SizeBox]  <HIDDEN>
+        SegmentedHealthBar  [WBP_Combat_SegmentedHealthBar_C]  <HIDDEN>
+      HealthBarLeftCap  [Image]  <HIDDEN>
+      HealthBarRightCap  [Image]  <HIDDEN>
+      CanvasPanel_176  [CanvasPanel]  <HIDDEN>
+        CommonVisualAttachment_0  [CommonVisualAttachment]  <HIDDEN>
+          LevelIndicator  [WBP_Combat_EnemyLevelIndicator_C]  <HIDDEN>
+      EI_HealthText  [TextBlock]  <HIDDEN>  text="50 / 2077"
+      EI_LevelBox  [SizeBox]  <HIDDEN>
+        EI_LevelStack  [Overlay]  <HIDDEN>
+          EI_LevelRim  [Border]  <HIDDEN>
+            EI_LevelFill  [Border]  <HIDDEN>
+          EI_LevelText  [TextBlock]  <HIDDEN>  text="17"
+    Overlay_1  [Overlay]  <HIDDEN>
+      NewStaminaBar  [DWW_StatBar_C]  <HIDDEN>
+      StaminaBarLeftCap  [Image]  <HIDDEN>
+      StaminaBarRightCap  [Image]  <HIDDEN>
+    CommonVisualAttachment_120  [CommonVisualAttachment]  <HIDDEN>
+      WBP_NPCWoundContainer  [WBP_NPCWoundContainer_C]  <HIDDEN>
