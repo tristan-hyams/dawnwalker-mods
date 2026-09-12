@@ -6,8 +6,8 @@ return function(mock, run, support)
     local assertEq, assertNear, assertTrue = support.assertEq, support.assertNear, support.assertTrue
     local VIS_COLLAPSED, VIS_SHOWN = support.VIS_COLLAPSED, support.VIS_SHOWN
 
-    -- Low-health flash. Threshold is max/LowHealthSegments: the point below which the
-    -- game's own segmented bar cannot show a difference.
+    -- Low-health flash: blinks the number and the badge fill below LowHealthPercent
+    -- of that enemy's own maximum.
     local function lowBar(world, hp, max, over)
         local bar = mock.newBar({
             name = "Bar1",
@@ -17,6 +17,24 @@ return function(mock, run, support)
         world.bars = { bar }
         mock.loadMod(world, cfg(over or {}))
         return bar
+    end
+
+    local function fillColour(bar)
+        local w = mock.deepFind(bar._host, "EI_LevelFill")
+        local c = w and w._SetBrushColor
+        if not c then return nil end
+        return string.format("%.3f,%.3f,%.3f", c.R or -1, c.G or -1, c.B or -1)
+    end
+
+    -- Distinct fill colours across n ticks; >1 means the badge is alternating.
+    local function fillsOver(world, bar, n)
+        local seen, count = {}, 0
+        for _ = 1, n do
+            world.tick(1)
+            local v = fillColour(bar)
+            if v ~= nil and not seen[v] then seen[v] = true count = count + 1 end
+        end
+        return count
     end
 
     -- All three channels, because the default TextColor and LowHealthColor share R=1
@@ -46,9 +64,9 @@ return function(mock, run, support)
         return count
     end
 
-    test("low health: the readout flashes below one segment's worth", function()
+    test("low health: the readout flashes below the threshold", function()
         local world = mock.newWorld()
-        -- 10 segments of 100 max = threshold 10; 4 HP is inside it.
+        -- 10% of 100 max = threshold 10; 4 HP is inside it.
         local bar = lowBar(world, 4, 100, { LowHealthPercent = 10 })
         assertTrue(coloursOver(world, bar, 16) >= 2,
             "expected the colour to alternate while low")
@@ -76,6 +94,27 @@ return function(mock, run, support)
         world.tick(12) -- settle past a full flash period
         assertEq(coloursOver(world, bar, 16), 1, "colour should be steady again")
         assertNear(hpColourR(bar), 1, "back to the TextColor base")
+    end)
+
+    test("low health: the threshold follows max health, it is not a fixed HP value", function()
+        local world = mock.newWorld()
+        -- 300 of 1000 is 30%, above a 25% threshold, so steady.
+        local bar = lowBar(world, 300, 1000, { LowHealthPercent = 25 })
+        assertEq(coloursOver(world, bar, 16), 1, "steady at 30% of max")
+
+        -- Same absolute health, bigger pool: 300 of 2000 is 15% and must now flash.
+        -- A hardcoded HP threshold would not notice.
+        bar["Target Character"].CharacterAttributeSet.MaxHealth.CurrentValue = 2000
+        world.tick(12) -- past the max-health re-read interval
+        assertTrue(coloursOver(world, bar, 16) >= 2, "flashing at 15% of the new max")
+    end)
+
+    test("low health: the number and the badge both flash", function()
+        local world = mock.newWorld()
+        local bar = lowBar(world, 4, 100)
+        -- Not configurable: the badge carries it peripherally, the number confirms it.
+        assertTrue(coloursOver(world, bar, 16) >= 2, "number should alternate")
+        assertTrue(fillsOver(world, bar, 16) >= 2, "badge fill should alternate")
     end)
 
     test("low health: every low bar flashes in phase", function()

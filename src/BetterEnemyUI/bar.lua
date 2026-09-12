@@ -60,6 +60,12 @@ return function(deps)
 
     local FMT = "%." .. C.decimals .. "f"
 
+    -- Logged at load so a "nothing happened" report is diagnosable without guessing:
+    -- it proves the config resolved end to end and states the actual trigger point, so
+    -- it can be compared against the numbers on screen.
+    once("lowcfg", string.format("low-health flash %s: below %d%% of max, %dms period",
+        LOW_FLASH and "ON" or "OFF", C.lowPercent, C.lowPeriodMs))
+
     local function styleText(tb, size)
         pcall(function() tb.Font.Size = size end)
         -- TextColor rather than hardcoded white: the health readout never honoured the
@@ -460,13 +466,18 @@ return function(deps)
         if on == shown.flash then return end -- transitions only
         shown.flash = on
 
-        if on then once("lowflash", "low-health flash engaged") end
+        -- Reports the actual numbers at onset, not just that it happened: "it fired
+        -- later than configured" is unanswerable from an eyeballed health estimate.
+        if on then
+            once("lowflash", string.format("low-health flash engaged at %.0f / %.0f (%.1f%% of max)",
+                shown.cur, shown.max, shown.cur / shown.max * 100))
+        end
 
         pcall(setColor, ui.hp, on and LOW_COLOR or C_TEXT)
 
-        -- The badge fill is the real peripheral target: a solid block going from near
-        -- black to saturated is a far larger luminance transient than recolouring thin
-        -- glyphs, which is what the eye actually catches off-centre.
+        -- Both, deliberately. The badge fill carries it peripherally - a solid block
+        -- going from near black to saturated is a far larger luminance transient than
+        -- recolouring thin glyphs - and the number makes it unambiguous once you look.
         if valid(ui.fill) then
             if on then
                 pcall(setBrush, ui.fill, LOW_COLOR, 1)

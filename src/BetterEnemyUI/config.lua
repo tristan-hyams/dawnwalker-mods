@@ -30,19 +30,23 @@ return {
     RefreshMs         = 150,
 
     -- Blinks the readout, and the badge fill behind it, once health drops below
-    -- 1/LowHealthSegments of maximum. A peripheral cue to finish them off, not a danger
+    -- LowHealthPercent of maximum. A peripheral cue to finish them off, not a danger
     -- warning - hence amber rather than red.
     --
-    -- LowHealthSegments is just a divisor: 10 means "below 10% of max". If the game's
-    -- bar has visible notches, matching that count makes the cue fire exactly when the
-    -- bar runs out of resolution and 1 HP starts looking identical to dead. If it has
-    -- none, pick whatever "nearly dead" should mean - lower fires later.
+    -- The window must be wider than a single hit: if one swing does more damage than
+    -- the whole window is wide, health jumps clean over it and the cue never fires.
+    -- Observed at 10% on a 1541 HP wolf - it first flashed at 2 HP.
+    --
+    -- The threshold is a percentage of that enemy's own max health, recomputed as max
+    -- changes, so it works the same on a 200 HP wolf and a 2000 HP boss - including a
+    -- multi-phase fight that buffs the pool mid-encounter.
     --
     -- LowHealthColor wants a large luminance gap from TextColor, not just a hue shift.
     -- Peripheral vision detects brightness changes far better than colour, so a pale
     -- tint next to white is effectively invisible.
     LowHealthFlash    = true,
     LowHealthPercent  = 25,
+
     LowHealthColor    = { R = 1, G = 0.55, B = 0.00 },
     LowHealthPeriodMs = 800,
 
